@@ -48,10 +48,9 @@ photographer.takePhoto(function(err, photoFileName) {
         console.log(JSON.stringify(response));
 
         if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
-          console.log('xxxxx')
           let spokenText = response.textAnnotations[0].description;
           console.log('speak1 %s', spokenText)
-          spokenText = spokenText.replaceAll('\n', '. ')
+          spokenText = spokenText.replace(/\n/g,".");
           console.log('speak2 %s', spokenText)
           spokenText = fixString(spokenText);
           console.log('speak3 %s', spokenText);
@@ -66,6 +65,8 @@ photographer.takePhoto(function(err, photoFileName) {
       }
     }, (e) => {
       console.log('Error: ', e);
+    }).catch((e) => {
+      console.log('ERROR FATAL', e);
     });
   }
 
