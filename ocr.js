@@ -69,13 +69,14 @@ photographer.takePhoto(function(err, photoFileName) {
 
       if (visionResponse.regions) {
         visionResponse.regions.forEach((region) => {
-          console.log(region.lines);
+          console.log(region.lines.words);
         });
       }
 
       if (visionResponse.words) {
+        console.log('HAY WORDS');
         visionResponse.words.forEach((word) => {
-          console.log(word.lines);
+          console.log(word.text);
         });
       }
     }, (e) => {
