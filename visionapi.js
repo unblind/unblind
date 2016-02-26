@@ -3,8 +3,8 @@
 const talker = require('./talker');
 const firebaser = require('./firebaser');
 
-const ENABLE_GOOGLE = true;
-const ENABLE_MS = false;
+const ENABLE_GOOGLE = false;
+const ENABLE_MS = true;
 
 var photographer = require('./photographer.js');
 
