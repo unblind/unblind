@@ -16,7 +16,7 @@ photographer.takePhoto(function(err, photoFileName) {
 
 	console.log('File: ' + photoFileName);
 
-  firebaser.uploadImage(photoFileName, res); // best effort: fire and forget
+  firebaser.uploadImage(photoFileName, {}); // best effort: fire and forget
 
   //
   // Google Vision API
