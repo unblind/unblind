@@ -29,9 +29,9 @@ function uploadImage(photoFileName, facesInfo) {
   screenshotsImagesRef.set({data: imageb64, faceInfo: facesInfo}, function(err) {
     if (err) {
       console.log('Error when upload the image.');
+      return;
     }
+
     console.log( 'Image uploaded.');
   });
-  return;
-
 }
