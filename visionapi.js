@@ -9,7 +9,7 @@ if (isRPi) {
   // TODO
 }
 
-const ENABLE_GOOGLE = true;
+const ENABLE_GOOGLE = false;
 const ENABLE_MS = true;
 
 //
@@ -36,10 +36,10 @@ if (ENABLE_GOOGLE) {
   });
 
   vision.annotate(req).then((res) => {
-    talker.speak('Acabo de procesar la foto con google');
-    console.log(JSON.stringify(res.responses))
+    // talker.speak('Acabo de procesar la foto con google');
+    console.log(JSON.stringify(res.responses));
   }, (e) => {
-    console.log('Error: ', e)
+    console.log('Error: ', e);
   });
 }
 
@@ -50,21 +50,35 @@ if (ENABLE_MS) {
   var oxford = require('project-oxford');
 
   const MS_VISION_API_TOKEN = process.env.MS_VISION_API_TOKEN;
+  const MS_VISION_EMOTION_API_TOKEN = process.env.MS_VISION_EMOTION_API_TOKEN;
 
-  if (!MS_VISION_API_TOKEN) {
-    console.error('You need to set a MS_VISION_API_TOKEN env var');
+  if (!MS_VISION_API_TOKEN || !MS_VISION_EMOTION_API_TOKEN) {
+    console.error('You need to set a MS_VISION_API_TOKEN and MS_VISION_EMOTION_API_TOKEN env vars');
     process.exit(1);
   }
 
-  const client = new oxford.Client(MS_VISION_API_TOKEN);
+  const client = new oxford.Client(MS_VISION_API_TOKEN),
+        clientEmotions = new oxford.Client(MS_VISION_EMOTION_API_TOKEN);
+
   client.face.detect({
       path: IMAGE_FILE,
       analyzesAge: true,
       analyzesGender: true
   }).then((res) => {
-      talker.speak('Acabo de procesar la foto con microsoft');
-      console.log(res);
-      console.log('The age is: ' + res[0].faceAttributes.age);
-      console.log('The gender is: ' + res[0].faceAttributes.gender);
+    clientEmotions.emotion.analyzeEmotion({
+      path: IMAGE_FILE /**,
+      faceRectangles: '10, 10, 100, 100' */
+    }).then(function (response) {
+      console.log(response);
+    }, (e) => {
+      console.log('Error analyze emotions: ', e);
+    });
+
+    // talker.speak('Acabo de procesar la foto con microsoft');
+    console.log(res);
+    console.log('The age is: ' + res[0].faceAttributes.age);
+    console.log('The gender is: ' + res[0].faceAttributes.gender);
+  }, (e) => {
+    console.log('Error: ', e);
   });
 }
