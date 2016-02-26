@@ -51,34 +51,50 @@ photographer.takePhoto(function(err, photoFileName) {
   if (ENABLE_MS) {
     var oxford = require('project-oxford');
 
-    const MS_VISION_API_TOKEN = process.env.MS_VISION_API_TOKEN;
+    const MS_VISION_FACE_API_TOKEN = process.env.MS_VISION_FACE_API_TOKEN;
     const MS_VISION_EMOTION_API_TOKEN = process.env.MS_VISION_EMOTION_API_TOKEN;
+    const MS_VISION_COMPUTER_API_TOKEN = process.env.MS_VISION_COMPUTER_API_TOKEN;
 
-    if (!MS_VISION_API_TOKEN || !MS_VISION_EMOTION_API_TOKEN) {
-      console.error('You need to set a MS_VISION_API_TOKEN and MS_VISION_EMOTION_API_TOKEN env vars');
+    if (!MS_VISION_FACE_API_TOKEN || !MS_VISION_EMOTION_API_TOKEN || !MS_VISION_COMPUTER_API_TOKEN) {
+      console.error('You need to set a MS_VISION_FACE_API_TOKEN and MS_VISION_EMOTION_API_TOKEN and MS_VISION_COMPUTER_API_TOKEN env vars');
       process.exit(1);
     }
 
-    const client = new oxford.Client(MS_VISION_API_TOKEN),
-          clientEmotions = new oxford.Client(MS_VISION_EMOTION_API_TOKEN);
+    const clientFaces = new oxford.Client(MS_VISION_FACE_API_TOKEN),
+          clientEmotions = new oxford.Client(MS_VISION_EMOTION_API_TOKEN),
+          clientComputer = new oxford.Client(MS_VISION_COMPUTER_API_TOKEN);
 
-    client.face.detect({
+    clientFaces.face.detect({
         path: photoFileName,
         analyzesAge: true,
-        analyzesGender: true
+        analyzesGender: true,
+        analyzesSmile: true,
+        analyzesFacialHair: true
     }).then((res) => {
-      // TODO pass faceRectangles to make emotion recognitzion faster
-      clientEmotions.emotion.analyzeEmotion({
-        path: photoFileName
-      }).then((emotionRes) => {
-        console.log(emotionRes);
-      }, (e) => {
-        console.log('Error analyze emotions: ', e);
-      });
+      console.log('Faces found %d', res.length);
+      if (res.length > 0) {
+        // process people
+        // TODO pass faceRectangles to make emotion recognitzion faster
+        clientEmotions.emotion.analyzeEmotion({
+          path: photoFileName
+        }).then((emotionRes) => {
+          console.log(JSON.stringify(emotionRes, null, 2));
+        }, (e) => {
+          console.log('Error analyze emotions: ', e);
+        });
 
-      console.log(res);
-      console.log('The age is: ' + res[0].faceAttributes.age);
-      console.log('The gender is: ' + res[0].faceAttributes.gender);
+        console.log(JSON.stringify(res, null, 2));
+        console.log('The age is: ' + res[0].faceAttributes.age);
+        console.log('The gender is: ' + res[0].faceAttributes.gender);
+      } else {
+        // process other info (ocr, landmarks)
+        clientComputer.vision.ocr({
+          path: photoFileName,
+          language: 'es'
+        }).then(function (visionResponse) {
+          console.log(visionResponse.body);
+        });
+      }
     }, (e) => {
       console.log('Error: ', e);
     });
