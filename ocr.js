@@ -45,6 +45,8 @@ photographer.takePhoto(function(err, photoFileName) {
       if (Array.isArray(res.responses) && res.responses.length > 0) {
         let response = res.responses[0];
 
+        console.log(JSON.stringify(response));
+
         if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
           let spokenText = response.textAnnotations[0].description;
           spokenText = spokenText.replaceAll('\n', '. ')
@@ -52,9 +54,11 @@ photographer.takePhoto(function(err, photoFileName) {
           console.log('speak %s', spokenText);
           talker.speak(spokenText);
         } else {
+          console.log('No textAnnotations');
           talker.speak('No consigo entender ese texto');
         }
       } else {
+        console.log('No responses');
         talker.speak('Lo siento, no consigo entender ese texto');
       }
     }, (e) => {
