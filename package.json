@@ -1,0 +1,14 @@
+{
+  "name": "unblind",
+  "version": "1.0.0",
+  "description": "Unblind. Be my eyes. HackForGood Valladolid, 2016",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Guido García <palmerabollo@gmail.com> (https://twitter.com/palmerabollo)",
+  "license": "ISC",
+  "dependencies": {
+    "node-cloud-vision-api": "^0.2.0"
+  }
+}
