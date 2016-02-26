@@ -124,13 +124,16 @@ photographer.takePhoto(function(err, photoFileName) {
         const req = new vision.Request({
           image: new vision.Image(photoFileName),
           features: [
+            new vision.Feature('LABEL_DETECTION', 10),
+            new vision.Feature('LANDMARK_DETECTION', 5),
             new vision.Feature('LOGO_DETECTION', 5)
           ]
         });
 
         vision.annotate(req).then((res) => {
+          console.log(JSON.stringify(res));
+          
           if (Array.isArray(res.responses) && res.responses.length > 0) {
-            console.log(JSON.stringify(res.responses));
             let response = res.responses[0];
 
             if (Array.isArray(response.logoAnnotations) && response.logoAnnotations.length > 0) {
