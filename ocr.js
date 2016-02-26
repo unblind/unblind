@@ -50,7 +50,7 @@ photographer.takePhoto(function(err, photoFileName) {
         if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
           let spokenText = response.textAnnotations[0].description;
           console.log('speak1 %s', spokenText)
-          spokenText = spokenText.replace(/\n/g,".");
+          spokenText = spokenText.replace(/\n/g, ". ");
           console.log('speak2 %s', spokenText)
           spokenText = fixString(spokenText);
           console.log('speak3 %s', spokenText);
