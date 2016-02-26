@@ -67,13 +67,17 @@ photographer.takePhoto(function(err, photoFileName) {
     }).then(function (visionResponse) {
       firebaser.uploadImage(photoFileName, visionResponse); // best effort: fire and forget
 
-      visionResponse.regions.forEach((region) => {
-        console.log(region.lines);
-      });
+      if (visionResponse.regions) {
+        visionResponse.regions.forEach((region) => {
+          console.log(region.lines);
+        });
+      }
 
-      visionResponse.words.forEach((word) => {
-        console.log(word.lines);
-      });
+      if (visionResponse.words) {
+        visionResponse.words.forEach((word) => {
+          console.log(word.lines);
+        });
+      }
     }, (e) => {
       console.log('Error: ', e);
     });;
