@@ -34,12 +34,16 @@ photographer.takePhoto(function(err, photoFileName) {
     const req = new vision.Request({
       image: new vision.Image(photoFileName),
       features: [
-        new vision.Feature('TEXT_DETECTION', 5)
+        new vision.Feature('TEXT_DETECTION', 10)
       ]
     });
 
+    console.log(JSON.stringify(res.responses));
+
     vision.annotate(req).then((res) => {
-      console.log(JSON.stringify(res.responses));
+      res.textAnnotations.forEach((text) => {
+        talker.speak(text.description.replaceAll('\n', '.'));
+      })
     }, (e) => {
       console.log('Error: ', e);
     });
