@@ -17,8 +17,8 @@ function takePhoto(callback) {
     var opts = {
       mode: 'photo',
       quality: 65,
-      width: 2592,
-      height: 1944,
+      width: 768,
+      height: 1024,
       output: pictureFilename,
       rotation: 270,
       t: 500
