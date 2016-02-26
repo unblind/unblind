@@ -13,13 +13,15 @@ function takePhoto(callback) {
     var currentTime = new Date().getTime();
     var pictureFilename = '/tmp/' + currentTime + '.jpg';
 
+    // max res 2592 x 1944, good results with 1024 x 768
     var opts = {
       mode: 'photo',
       quality: 65,
-      width: 1024,
-      height: 768,
+      width: 2592,
+      height: 1944,
       output: pictureFilename,
-      rotation: 270
+      rotation: 270,
+      t: 500
     };
 
     var camera = new RaspiCam(opts);
