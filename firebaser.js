@@ -16,3 +16,51 @@ myFirebaseRef.child('message').on('value', (snapshot) => {
 
   firstMessage = false;
 });
+
+module.exports = {
+  uploadImage
+}
+
+function uploadImage(photoFileName, facesInfo) {
+  // convert to base64 http://stackoverflow.com/a/28835460/12388
+  /**
+  [
+    {
+      "faceRectangle": {
+        "top": 379,
+        "left": 738,
+        "width": 335,
+        "height": 335
+      },
+      "faceAttributes": {
+        "smile": 0.547,
+        "gender": "male",
+        "age": 33,
+        "facialHair": {
+          "moustache": 0.4,
+          "beard": 0.4,
+          "sideburns": 0.3
+        }
+      }
+    },
+    {
+      "faceRectangle": {
+        "top": 250,
+        "left": 248,
+        "width": 236,
+        "height": 236
+      },
+      "faceAttributes": {
+        "smile": 0.059,
+        "gender": "male",
+        "age": 28.2,
+        "facialHair": {
+          "moustache": 0.1,
+          "beard": 0.2,
+          "sideburns": 0.2
+        }
+      }
+    }
+  ]
+  */
+}
