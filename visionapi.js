@@ -1,5 +1,7 @@
 'use strict';
 
+const say = require('say');
+
 // TODO
 const IMAGE_FILE = './test.jpg';
 
@@ -30,6 +32,7 @@ if (ENABLE_GOOGLE) {
   });
 
   vision.annotate(req).then((res) => {
+    say.speak('Acabo de procesar la foto con google');
     console.log(JSON.stringify(res.responses))
   }, (e) => {
     console.log('Error: ', e)
@@ -54,9 +57,10 @@ if (ENABLE_MS) {
       path: IMAGE_FILE,
       analyzesAge: true,
       analyzesGender: true
-  }).then(function (response) {
-      console.log(response);
-      console.log('The age is: ' + response[0].faceAttributes.age);
-      console.log('The gender is: ' + response[0].faceAttributes.gender);
+  }).then((res) => {
+      say.speak('Acabo de procesar la foto con microsoft');
+      console.log(res);
+      console.log('The age is: ' + res[0].faceAttributes.age);
+      console.log('The gender is: ' + res[0].faceAttributes.gender);
   });
 }

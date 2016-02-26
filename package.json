@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "node-cloud-vision-api": "^0.2.0",
-    "project-oxford": "^1.1.0"
+    "project-oxford": "^1.1.0",
+    "say": "^0.9.0"
   }
 }
