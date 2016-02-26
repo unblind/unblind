@@ -32,6 +32,6 @@ function uploadImage(photoFileName, facesInfo) {
       return;
     }
 
-    console.log( 'Image uploaded.');
+    console.log('Image uploaded.');
   });
 }
