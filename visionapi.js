@@ -1,28 +1,62 @@
 'use strict';
 
-const vision = require('node-cloud-vision-api');
+// TODO
+const IMAGE_FILE = './test.jpg';
 
-const IMAGE_FILE = '/Users/guido/_tmp_image.jpg';
+const ENABLE_GOOGLE = true;
+const ENABLE_MS = true;
 
-const GOOGLE_VISION_API_TOKEN = process.env.GOOGLE_VISION_API_TOKEN;
+//
+// Google Vision API
+//
+if (ENABLE_GOOGLE) {
+  const vision = require('node-cloud-vision-api');
 
-if (!GOOGLE_VISION_API_TOKEN) {
-  console.error('You need set a GOOGLE_VISION_API_TOKEN env var in google vision api token');
-  process.exit(1);
+  const GOOGLE_VISION_API_TOKEN = process.env.GOOGLE_VISION_API_TOKEN;
+
+  if (!GOOGLE_VISION_API_TOKEN) {
+    console.error('You need to set a GOOGLE_VISION_API_TOKEN env var');
+    process.exit(1);
+  }
+
+  vision.init({auth: GOOGLE_VISION_API_TOKEN});
+
+  const req = new vision.Request({
+    image: new vision.Image(IMAGE_FILE),
+    features: [
+      new vision.Feature('FACE_DETECTION', 5),
+      new vision.Feature('LABEL_DETECTION', 5)
+    ]
+  });
+
+  vision.annotate(req).then((res) => {
+    console.log(JSON.stringify(res.responses))
+  }, (e) => {
+    console.log('Error: ', e)
+  });
 }
 
-vision.init({auth: GOOGLE_VISION_API_TOKEN});
+//
+// MS Oxford
+//
+if (ENABLE_MS) {
+  var oxford = require('project-oxford');
 
-const req = new vision.Request({
-  image: new vision.Image(IMAGE_FILE),
-  features: [
-    new vision.Feature('FACE_DETECTION', 5),
-    new vision.Feature('LABEL_DETECTION', 5)
-  ]
-});
+  const MS_VISION_API_TOKEN = process.env.MS_VISION_API_TOKEN;
 
-vision.annotate(req).then((res) => {
-  console.log(JSON.stringify(res.responses))
-}, (e) => {
-  console.log('Error: ', e)
-});
+  if (!MS_VISION_API_TOKEN) {
+    console.error('You need to set a MS_VISION_API_TOKEN env var');
+    process.exit(1);
+  }
+
+  const client = new oxford.Client(MS_VISION_API_TOKEN);
+  client.face.detect({
+      path: IMAGE_FILE,
+      analyzesAge: true,
+      analyzesGender: true
+  }).then(function (response) {
+      console.log(response);
+      console.log('The age is: ' + response[0].faceAttributes.age);
+      console.log('The gender is: ' + response[0].faceAttributes.gender);
+  });
+}
