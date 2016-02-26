@@ -36,10 +36,9 @@ photographer.takePhoto(function(err, photoFileName) {
     const req = new vision.Request({
       image: new vision.Image(photoFileName),
       features: [
-        new vision.Feature('LABEL_DETECTION', 5),
+        new vision.Feature('LABEL_DETECTION', 10),
         new vision.Feature('LOGO_DETECTION', 5),
-        new vision.Feature('LANDMARK_DETECTION', 5),
-        new vision.Feature('TEXT_DETECTION', 5)
+        new vision.Feature('LANDMARK_DETECTION', 5)
       ]
     });
 
