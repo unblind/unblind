@@ -48,7 +48,9 @@ photographer.takePhoto(function(err, photoFileName) {
         console.log(JSON.stringify(response));
 
         if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
+          console.log('xxxxx')
           let spokenText = response.textAnnotations[0].description;
+          console.log('speak %s', spokenText)
           spokenText = spokenText.replaceAll('\n', '. ')
           spokenText = fixString(spokenText);
           console.log('speak %s', spokenText);
