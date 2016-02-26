@@ -70,6 +70,10 @@ photographer.takePhoto(function(err, photoFileName) {
       visionResponse.regions.forEach((region) => {
         console.log(region.lines);
       });
+
+      visionResponse.words.forEach((word) => {
+        console.log(word.lines);
+      });
     }, (e) => {
       console.log('Error: ', e);
     });;
