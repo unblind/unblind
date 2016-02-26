@@ -8,6 +8,8 @@ const ENABLE_MS = true;
 
 var photographer = require('./photographer.js');
 
+talker.speak('De acuerdo. Voy a analizar lo que tienes delante. Ahora te cuento.');
+
 photographer.takePhoto(function(err, photoFileName) {
   if (err) {
     talker.speak('I can not take a foto now. Sorry.');
@@ -130,8 +132,13 @@ photographer.takePhoto(function(err, photoFileName) {
           if (Array.isArray(res.responses) && res.responses.length > 0) {
             console.log(JSON.stringify(res.responses));
             let response = res.responses[0];
-            let brand = response.logoAnnotations[0].description;
-            talker.speak('Tienes delante un producto de la marca ' + brand);
+
+            if (Array.isArray(response.logoAnnotations) && response.logoAnnotations.length > 0) {
+              let brand = response.logoAnnotations[0].description;
+              talker.speak('Tienes delante un producto de la marca ' + brand);
+            } else {
+              talker.speak('Lo siento. No he encontrado nada.');
+            }
           } else {
             talker.speak('Lo siento. No he encontrado nada.');
           }

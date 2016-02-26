@@ -8,6 +8,8 @@ const ENABLE_MS = false;
 
 var photographer = require('./photographer.js');
 
+talker.speak('Entendido. Voy a intentar entender lo que tienes delante. Ahora te lo leo.');
+
 photographer.takePhoto(function(err, photoFileName) {
   if (err) {
     talker.speak('I can not take a foto now. Sorry.');
