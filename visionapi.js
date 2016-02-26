@@ -8,7 +8,7 @@ const ENABLE_MS = true;
 
 var photographer = require('./photographer.js');
 
-talker.speak('De acuerdo. Voy a analizar lo que tienes delante. Ahora te cuento.');
+// talker.speak('De acuerdo. Voy a analizar lo que tienes delante. Ahora te cuento.');
 
 photographer.takePhoto(function(err, photoFileName) {
   if (err) {
@@ -132,7 +132,7 @@ photographer.takePhoto(function(err, photoFileName) {
 
         vision.annotate(req).then((res) => {
           console.log(JSON.stringify(res));
-          
+
           if (Array.isArray(res.responses) && res.responses.length > 0) {
             let response = res.responses[0];
 
