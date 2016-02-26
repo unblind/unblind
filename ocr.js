@@ -15,7 +15,7 @@ photographer.takePhoto(function(err, photoFileName) {
   }
 
   console.log('File: ' + photoFileName);
-  
+
   firebaser.uploadImage(photoFileName, {}); // best effort: fire and forget
 
   //
@@ -56,8 +56,8 @@ photographer.takePhoto(function(err, photoFileName) {
 
     const MS_VISION_COMPUTER_API_TOKEN = process.env.MS_VISION_COMPUTER_API_TOKEN;
 
-    if (!MS_VISION_FACE_API_TOKEN || !MS_VISION_EMOTION_API_TOKEN || !MS_VISION_COMPUTER_API_TOKEN) {
-      console.error('You need to set a MS_VISION_FACE_API_TOKEN and MS_VISION_EMOTION_API_TOKEN and MS_VISION_COMPUTER_API_TOKEN env vars');
+    if (!MS_VISION_COMPUTER_API_TOKEN) {
+      console.error('You need to set a MS_VISION_COMPUTER_API_TOKEN env vars');
       process.exit(1);
     }
 
