@@ -1,6 +1,6 @@
 'use strict';
 
-const speaker = require('./speaker');
+const talker = require('./talker');
 
 const isRPi = process.arch === 'arm';
 
@@ -36,7 +36,7 @@ if (ENABLE_GOOGLE) {
   });
 
   vision.annotate(req).then((res) => {
-    speaker.speak('Acabo de procesar la foto con google');
+    talker.speak('Acabo de procesar la foto con google');
     console.log(JSON.stringify(res.responses))
   }, (e) => {
     console.log('Error: ', e)
@@ -62,7 +62,7 @@ if (ENABLE_MS) {
       analyzesAge: true,
       analyzesGender: true
   }).then((res) => {
-      speaker.speak('Acabo de procesar la foto con microsoft');
+      talker.speak('Acabo de procesar la foto con microsoft');
       console.log(res);
       console.log('The age is: ' + res[0].faceAttributes.age);
       console.log('The gender is: ' + res[0].faceAttributes.gender);
