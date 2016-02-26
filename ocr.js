@@ -50,10 +50,11 @@ photographer.takePhoto(function(err, photoFileName) {
         if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
           console.log('xxxxx')
           let spokenText = response.textAnnotations[0].description;
-          console.log('speak %s', spokenText)
+          console.log('speak1 %s', spokenText)
           spokenText = spokenText.replaceAll('\n', '. ')
+          console.log('speak2 %s', spokenText)
           spokenText = fixString(spokenText);
-          console.log('speak %s', spokenText);
+          console.log('speak3 %s', spokenText);
           talker.speak(spokenText);
         } else {
           console.log('No textAnnotations');
