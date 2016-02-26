@@ -74,9 +74,10 @@ photographer.takePhoto(function(err, photoFileName) {
     }).then((res) => {
       console.log('Faces found %d', res.length);
 
+      firebaser.uploadImage(photoFileName, res); // best effort: fire and forget
+
       if (res.length > 0) {
         // process people
-        firebaser.uploadImage(photoFileName, res); // best effort: fire and forget
 
         let generalDescription = 'Ahora mismo tienes a ' + (res.length === 1 ? 'una persona' : res.length + ' personas') + ' delante.';
 
