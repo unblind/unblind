@@ -3,8 +3,8 @@
 const talker = require('./talker');
 const firebaser = require('./firebaser');
 
-const ENABLE_GOOGLE = false;
-const ENABLE_MS = true;
+const ENABLE_GOOGLE = true;
+const ENABLE_MS = false;
 
 var photographer = require('./photographer.js');
 
@@ -88,7 +88,7 @@ photographer.takePhoto(function(err, photoFileName) {
       language: 'es'
     }).then(function (visionResponse) {
       console.log(JSON.stringify(visionResponse));
-      
+
       firebaser.uploadImage(photoFileName, visionResponse); // best effort: fire and forget
 
       if (visionResponse.regions) {
