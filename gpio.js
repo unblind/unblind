@@ -1,6 +1,6 @@
 'use strict';
 
-const gpio = process.arch === 'arm' ? null : require('node-gpio');
+const gpio = process.arch === 'arm' ? require('node-gpio') : null;
 
 const BUTTON_IMAGE_PIN = '17';
 const BUTTON_OCR_PIN = '18';
@@ -16,7 +16,7 @@ function run() {
     console.log('No Raspberry Pi interface');
     return;
   }
-
+  let GPIO = gpio.GPIO;
   let buttonImage = new GPIO(BUTTON_IMAGE_PIN);
   let buttonOCR = new GPIO(BUTTON_OCR_PIN);
   let initProcess = 0;
