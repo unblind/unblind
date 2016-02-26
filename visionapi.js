@@ -36,8 +36,6 @@ photographer.takePhoto(function(err, photoFileName) {
     return;
   }
 
-  talker.speak('De acuerdo. Voy a analizar lo que tienes delante. Ahora te cuento.');
-
 	console.log('File: ' + photoFileName);
 
   firebaser.uploadImage(photoFileName, {}); // best effort: fire and forget

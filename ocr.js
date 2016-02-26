@@ -22,8 +22,6 @@ photographer.takePhoto(function(err, photoFileName) {
     return;
   }
 
-  talker.speak('Entendido. Voy a intentar entender lo que tienes delante. Ahora te lo leo.');
-
   console.log('File: ' + photoFileName);
 
   const req = new vision.Request({
