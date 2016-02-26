@@ -3,8 +3,8 @@
 const talker = require('./talker');
 const firebaser = require('./firebaser');
 
-const ENABLE_GOOGLE = false;
-const ENABLE_MS = true;
+const ENABLE_GOOGLE = true;
+const ENABLE_MS = false;
 
 var photographer = require('./photographer.js');
 
@@ -34,8 +34,10 @@ photographer.takePhoto(function(err, photoFileName) {
     const req = new vision.Request({
       image: new vision.Image(photoFileName),
       features: [
-        new vision.Feature('FACE_DETECTION', 5),
-        new vision.Feature('LABEL_DETECTION', 5)
+        new vision.Feature('LABEL_DETECTION', 5),
+        new vision.Feature('LOGO_DETECTION', 5),
+        new vision.Feature('LANDMARK_DETECTION', 5),
+        new vision.Feature('TEXT_DETECTION', 5)
       ]
     });
 
