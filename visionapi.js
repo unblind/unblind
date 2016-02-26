@@ -5,17 +5,12 @@ const firebaser = require('./firebaser');
 
 const photographer = require('./photographer.js');
 
-const vision = require('node-cloud-vision-api');
-const oxford = require('project-oxford');
-
 const GOOGLE_VISION_API_TOKEN = process.env.GOOGLE_VISION_API_TOKEN;
 
 if (!GOOGLE_VISION_API_TOKEN) {
   console.error('You need to set a GOOGLE_VISION_API_TOKEN env var');
   process.exit(1);
 }
-
-vision.init({auth: GOOGLE_VISION_API_TOKEN});
 
 const MS_VISION_FACE_API_TOKEN = process.env.MS_VISION_FACE_API_TOKEN;
 const MS_VISION_EMOTION_API_TOKEN = process.env.MS_VISION_EMOTION_API_TOKEN;
@@ -25,6 +20,8 @@ if (!MS_VISION_FACE_API_TOKEN || !MS_VISION_EMOTION_API_TOKEN || !MS_VISION_COMP
   console.error('You need to set a MS_VISION_FACE_API_TOKEN and MS_VISION_EMOTION_API_TOKEN and MS_VISION_COMPUTER_API_TOKEN env vars');
   process.exit(1);
 }
+
+const oxford = require('project-oxford');
 
 const clientFaces = new oxford.Client(MS_VISION_FACE_API_TOKEN),
       clientEmotions = new oxford.Client(MS_VISION_EMOTION_API_TOKEN),
@@ -68,12 +65,16 @@ photographer.takePhoto(function(err, photoFileName) {
         }
       });
     } else {
+      // lazy loading of Google Vision API libraries
+
+      const vision = require('node-cloud-vision-api');
+      vision.init({auth: GOOGLE_VISION_API_TOKEN});
+
       const req = new vision.Request({
         image: new vision.Image(photoFileName),
         features: [
-          new vision.Feature('LABEL_DETECTION', 10),
-          new vision.Feature('LANDMARK_DETECTION', 5),
-          new vision.Feature('LOGO_DETECTION', 5)
+          new vision.Feature('LABEL_DETECTION', 1),
+          new vision.Feature('LOGO_DETECTION', 1)
         ]
       });
 
