@@ -18,7 +18,8 @@ function takePhoto(callback) {
       quality: 65,
       width: 640, // 1024,
       height: 480, // 768,
-      output: pictureFilename
+      output: pictureFilename,
+      rotation: 270
     };
 
     var camera = new RaspiCam(opts);
