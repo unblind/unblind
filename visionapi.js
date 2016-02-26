@@ -1,6 +1,7 @@
 'use strict';
 
 const talker = require('./talker');
+const firebaser = require('./firebaser');
 
 const ENABLE_GOOGLE = false;
 const ENABLE_MS = true;
@@ -72,20 +73,33 @@ photographer.takePhoto(function(err, photoFileName) {
         analyzesFacialHair: true
     }).then((res) => {
       console.log('Faces found %d', res.length);
+
       if (res.length > 0) {
         // process people
-        // TODO pass faceRectangles to make emotion recognitzion faster
-        clientEmotions.emotion.analyzeEmotion({
-          path: photoFileName
-        }).then((emotionRes) => {
-          console.log(JSON.stringify(emotionRes, null, 2));
-        }, (e) => {
-          console.log('Error analyze emotions: ', e);
-        });
+        firebaser.uploadImage(photoFileName, res); // best effort: fire and forget
 
-        console.log(JSON.stringify(res, null, 2));
-        console.log('The age is: ' + res[0].faceAttributes.age);
-        console.log('The gender is: ' + res[0].faceAttributes.gender);
+        let generalDescription = 'Ahora mismo tienes a ' + (res.length === 1 ? 'una persona' : res.length + ' personas') + ' delante.';
+
+        talker.speak(generalDescription, function () {
+          if (res.length < 4) { // avoid parsing too many people
+            let description = describeOxfordPeople(res);
+            talker.speak(description);
+          }
+
+          /**
+          // TODO pass faceRectangles to make emotion recognitzion even faster
+          clientEmotions.emotion.analyzeEmotion({
+            path: photoFileName
+          }).then((emotionRes) => {
+
+            console.log(emotionRes);
+          }, (e) => {
+            console.log('Error analyze emotions: ', e);
+          });
+          */
+
+          console.log(res);
+        });
       } else {
         // process other info (ocr, landmarks)
         clientComputer.vision.ocr({
@@ -100,3 +114,28 @@ photographer.takePhoto(function(err, photoFileName) {
     });
   }
 });
+
+function describeOxfordPeople(people) {
+  let description = '';
+
+  people.forEach(person => {
+    let personDescription = 'Hay ' +
+            (person.faceAttributes.gender === 'male' ? 'un hombre' : 'una mujer') +
+            ' de unos ' + (person.faceAttributes.age).toFixed(0) + ' años';
+
+    if (person.faceAttributes.gender === 'male') {
+      if (person.faceAttributes.facialHair.beard >= 0.25 && person.faceAttributes.facialHair.beard < 0.5) {
+        personDescription += ', que no se afeita mucho';
+      }
+    }
+
+    if (person.faceAttributes.smile > 0.6) {
+      personDescription += ', y que está sonriendo.'
+    } else {
+      personDescription += '.';
+    }
+    description += personDescription;
+  });
+
+  return description;
+}

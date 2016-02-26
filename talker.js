@@ -4,6 +4,13 @@ module.exports = {
   speak
 };
 
-function speak(text) {
-  say.speak(text, 'voice_el_diphone'); // XXX ignore callback
+function speak(text, callback) {
+  var isRPi = process.arch === 'arm';
+
+  const voice = isRPi ? 'voice_el_diphone' : 'Diego';
+  say.speak(text, voice, 1.0, function (err) {
+    if (callback) {
+      return callback(err);
+    }
+  });
 }
