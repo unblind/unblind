@@ -127,8 +127,14 @@ photographer.takePhoto(function(err, photoFileName) {
         });
 
         vision.annotate(req).then((res) => {
-          console.log(JSON.stringify(res.responses));
-          talker.speak('Lo siento. No he encontrado nada.');
+          if (Array.isArray(res.responses) && res.responses.length > 0) {
+            console.log(JSON.stringify(res.responses));
+            let response = res.responses[0];
+            let brand = response.logoAnnotations[0].description;
+            talker.speak('Tienes delante un producto de la marca ' + brand);
+          } else {
+            talker.speak('Lo siento. No he encontrado nada.');
+          }
         }, (e) => {
           console.log('Error: ', e);
         });
