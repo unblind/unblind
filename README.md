@@ -24,3 +24,5 @@ sudo apt-get install festlex-cmu festlex-poslex libestools1.2 festvox-ellpc11k
 # Enable analog output (not needed in my raspbian in RPi B+)
 amixer cset numid=3 1  # 0=auto, 1=analog, 2=hdmi
 ```
+# GPIO node.js module:
+sudo npm install -g node-gpio
