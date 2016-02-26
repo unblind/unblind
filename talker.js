@@ -5,5 +5,5 @@ module.exports = {
 };
 
 function speak(text) {
-  say.speak(text); // XXX ignore callback
+  say.speak(text, 'voice_el_diphone'); // XXX ignore callback
 }
