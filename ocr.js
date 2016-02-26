@@ -16,8 +16,6 @@ photographer.takePhoto(function(err, photoFileName) {
 
   console.log('File: ' + photoFileName);
 
-  firebaser.uploadImage(photoFileName, {}); // best effort: fire and forget
-
   //
   // Google Vision API
   //
@@ -67,7 +65,11 @@ photographer.takePhoto(function(err, photoFileName) {
       path: photoFileName,
       language: 'es'
     }).then(function (visionResponse) {
-      console.log(visionResponse);
+      firebaser.uploadImage(photoFileName, visionResponse); // best effort: fire and forget
+
+      visionResponse.regions.forEach((region) => {
+        console.log(region.lines);
+      });
     }, (e) => {
       console.log('Error: ', e);
     });;
