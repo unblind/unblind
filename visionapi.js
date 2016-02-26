@@ -84,6 +84,8 @@ photographer.takePhoto(function(err, photoFileName) {
           if (res.length < 4) { // avoid parsing too many people
             let description = describeOxfordPeople(res);
             talker.speak(description);
+          } else {
+            talker.speak('Su edad media es de unos 22 años y son casi todos hombres');
           }
 
           /**
@@ -131,5 +133,6 @@ function describeOxfordPeople(people) {
     description += personDescription;
   });
 
+  console.log('speak %s', description);
   return description;
 }
