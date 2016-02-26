@@ -52,7 +52,7 @@ photographer.takePhoto(function(err, photoFileName) {
           spokenText = spokenText.replace(/\n/g, ". ");
           spokenText = fixString(spokenText);
           console.log('speak %s', spokenText);
-          talker.speak(spokenText);
+          talker.speak('Atiende, este es el texto que he leido: ' + spokenText);
         } else {
           console.log('No text annotations');
           talker.speak('No consigo entender ese texto');

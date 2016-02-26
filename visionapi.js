@@ -3,8 +3,8 @@
 const talker = require('./talker');
 const firebaser = require('./firebaser');
 
-const ENABLE_GOOGLE = false;
-const ENABLE_MS = true;
+const ENABLE_GOOGLE = true;
+const ENABLE_MS = false;
 
 var photographer = require('./photographer.js');
 
@@ -79,7 +79,7 @@ photographer.takePhoto(function(err, photoFileName) {
     });
 
     return; // TODO
-    
+
     clientFaces.face.detect({
         path: photoFileName,
         analyzesAge: true,
@@ -89,6 +89,7 @@ photographer.takePhoto(function(err, photoFileName) {
     }).then((res) => {
       console.log('Faces found %d', res.length);
 
+      console.log(JSON.stringify(res));
       if (res.length > 0) {
         // process people
 
@@ -99,22 +100,14 @@ photographer.takePhoto(function(err, photoFileName) {
             let description = describeOxfordPeople(res);
             talker.speak(description);
           } else {
-            talker.speak('Su edad media es de unos 22 anyos y son casi todos hombres');
+            let age = 0;
+            people.forEach(person => {
+              age += person.faceAttributes.age;
+            });
+            let averageAge = (age / res.length).toFixed(0);
+
+            talker.speak('Su edad media es de unos ' + averageAge + ' anyos y son casi todos hombres');
           }
-
-          /**
-          // TODO pass faceRectangles to make emotion recognitzion even faster
-          clientEmotions.emotion.analyzeEmotion({
-            path: photoFileName
-          }).then((emotionRes) => {
-
-            console.log(emotionRes);
-          }, (e) => {
-            console.log('Error analyze emotions: ', e);
-          });
-          */
-
-          console.log(res);
         });
       } else {
         talker.speak('Lo siento. No he encontrado nada.');
@@ -135,7 +128,9 @@ function describeOxfordPeople(people) {
 
     if (person.faceAttributes.gender === 'male') {
       if (person.faceAttributes.facialHair.beard >= 0.25 && person.faceAttributes.facialHair.beard < 0.5) {
-        personDescription += ', que no se afeita mucho';
+        personDescription += ', que tiene barba de unos dias';
+      } else if (person.faceAttributes.facialHair.beard >= 0.9) {
+        personDescription += ', con mucha barba';
       }
     }
 
