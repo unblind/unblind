@@ -78,8 +78,6 @@ photographer.takePhoto(function(err, photoFileName) {
       console.log('Error: ', e);
     });
 
-    return; // TODO
-
     clientFaces.face.detect({
         path: photoFileName,
         analyzesAge: true,
