@@ -1,18 +1,21 @@
 'use strict';
 
-var RaspiCam = require("raspicam");
+var RaspiCam = require('raspicam');
 
-module.exports.takePhoto = function takePhoto(callback) {
+module.exports = {
+  takePhoto
+};
 
+function takePhoto(callback) {
   var isRPi = process.arch === 'arm';
 
   if (isRPi) {
-    var currTime = new Date().getTime();
-    var pictureFilename = "/home/pi/pictures/" + currTime + ".jpg";
+    var currentTime = new Date().getTime();
+    var pictureFilename = '/tmp/' + currentTime + '.jpg';
 
     var opts = {
-      mode: "photo",
-      quality: 10,
+      mode: 'photo',
+      quality: 50,
       width: 1024,
       height: 768,
       output: pictureFilename
@@ -20,11 +23,12 @@ module.exports.takePhoto = function takePhoto(callback) {
 
     var camera = new RaspiCam(opts);
     camera.start(opts);
-    camera.on('read', function(err, timestamp, filename){
-      // Read event is called twice taking one photo. Avoid to stop the cam process at the first event.
+
+    camera.on('read', function(err, timestamp, filename) {
+      // XXX Read event is called twice taking one photo. Avoid to stop the cam process at the first event.
       if (filename.indexOf('~') < 0) {
         camera.removeListener('read', function() {
-          console.log('Removed listener.');
+          console.log('Remove camera listener.');
         });
         camera.stop();
         console.log('Camera stopped.');
@@ -32,7 +36,7 @@ module.exports.takePhoto = function takePhoto(callback) {
       }
     });
   } else {
-    // Non raspberry environments.
+    // Non raspberry environments. Use test image.
     callback(null, './test.jpg');
   }
 };
