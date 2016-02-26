@@ -108,7 +108,30 @@ photographer.takePhoto(function(err, photoFileName) {
           }
         });
       } else {
-        talker.speak('Lo siento. No he encontrado nada.');
+        const vision = require('node-cloud-vision-api');
+
+        const GOOGLE_VISION_API_TOKEN = process.env.GOOGLE_VISION_API_TOKEN;
+
+        if (!GOOGLE_VISION_API_TOKEN) {
+          console.error('You need to set a GOOGLE_VISION_API_TOKEN env var');
+          process.exit(1);
+        }
+
+        vision.init({auth: GOOGLE_VISION_API_TOKEN});
+
+        const req = new vision.Request({
+          image: new vision.Image(photoFileName),
+          features: [
+            new vision.Feature('LOGO_DETECTION', 5)
+          ]
+        });
+
+        vision.annotate(req).then((res) => {
+          console.log(JSON.stringify(res.responses));
+          talker.speak('Lo siento. No he encontrado nada.');
+        }, (e) => {
+          console.log('Error: ', e);
+        });
       }
     }, (e) => {
       console.log('Error: ', e);
