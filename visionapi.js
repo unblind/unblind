@@ -85,7 +85,7 @@ photographer.takePhoto(function(err, photoFileName) {
             let description = describeOxfordPeople(res);
             talker.speak(description);
           } else {
-            talker.speak('Su edad media es de unos 22 años y son casi todos hombres');
+            talker.speak('Su edad media es de unos 22 anyos y son casi todos hombres');
           }
 
           /**
@@ -117,7 +117,7 @@ function describeOxfordPeople(people) {
   people.forEach(person => {
     let personDescription = 'Hay ' +
             (person.faceAttributes.gender === 'male' ? 'un hombre' : 'una mujer') +
-            ' de unos ' + (person.faceAttributes.age).toFixed(0) + ' años';
+            ' de unos ' + (person.faceAttributes.age).toFixed(0) + ' anyos';
 
     if (person.faceAttributes.gender === 'male') {
       if (person.faceAttributes.facialHair.beard >= 0.25 && person.faceAttributes.facialHair.beard < 0.5) {
@@ -126,7 +126,7 @@ function describeOxfordPeople(people) {
     }
 
     if (person.faceAttributes.smile > 0.6) {
-      personDescription += ', y que está sonriendo.'
+      personDescription += ', y que esta sonriendo.'
     } else {
       personDescription += '.';
     }
