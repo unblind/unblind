@@ -92,7 +92,7 @@ photographer.takePhoto(function(err, photoFileName) {
           path: photoFileName,
           language: 'es'
         }).then(function (visionResponse) {
-          console.log(visionResponse.body);
+          console.log(visionResponse);
         });
       }
     }, (e) => {
