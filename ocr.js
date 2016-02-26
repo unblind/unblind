@@ -51,9 +51,11 @@ photographer.takePhoto(function(err, photoFileName) {
           spokenText = fixString(spokenText);
           console.log('speak %s', spokenText);
           talker.speak(spokenText);
+        } else {
+          talker.speak('No consigo entender ese texto');
         }
       } else {
-        talker.speak('No consigo entender ese texto');
+        talker.speak('Lo siento, no consigo entender ese texto');
       }
     }, (e) => {
       console.log('Error: ', e);
