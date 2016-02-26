@@ -2,7 +2,7 @@
 
 var RaspiCam = require("raspicam");
 
-module.exports.takePhoto = function takePhoto(err, callback) {
+module.exports.takePhoto = function takePhoto(callback) {
 
   var isRPi = process.arch === 'arm';
 
