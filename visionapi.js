@@ -3,8 +3,8 @@
 const talker = require('./talker');
 const firebaser = require('./firebaser');
 
-const ENABLE_GOOGLE = true;
-const ENABLE_MS = false;
+const ENABLE_GOOGLE = false;
+const ENABLE_MS = true;
 
 var photographer = require('./photographer.js');
 
@@ -68,6 +68,18 @@ photographer.takePhoto(function(err, photoFileName) {
           clientEmotions = new oxford.Client(MS_VISION_EMOTION_API_TOKEN),
           clientComputer = new oxford.Client(MS_VISION_COMPUTER_API_TOKEN);
 
+    clientComputer.vision.analyzeImage({
+      path: photoFileName,
+      Categories: true,
+      Faces: true
+    }).then((res) => {
+      console.log(JSON.stringify(res));
+    }, (e) => {
+      console.log('Error: ', e);
+    });
+
+    return; // TODO
+    
     clientFaces.face.detect({
         path: photoFileName,
         analyzesAge: true,
