@@ -32,7 +32,7 @@ function takePhoto(callback) {
         });
         camera.stop();
         console.log('Camera stopped.');
-        callback(err, filename);
+        callback(err, pictureFilename);
       }
     });
   } else {
