@@ -16,6 +16,8 @@ photographer.takePhoto(function(err, photoFileName) {
 
 	console.log('File: ' + photoFileName);
 
+  firebaser.uploadImage(photoFileName, res); // best effort: fire and forget
+
   //
   // Google Vision API
   //
@@ -75,8 +77,6 @@ photographer.takePhoto(function(err, photoFileName) {
         analyzesFacialHair: true
     }).then((res) => {
       console.log('Faces found %d', res.length);
-
-      firebaser.uploadImage(photoFileName, res); // best effort: fire and forget
 
       if (res.length > 0) {
         // process people
