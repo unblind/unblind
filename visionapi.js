@@ -131,7 +131,7 @@ function describeOxfordPeople(people) {
     } else {
       personDescription += '.';
     }
-    description += personDescription;
+    description += personDescription + ' ';
   });
 
   console.log('speak %s', description);
