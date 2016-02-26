@@ -18,7 +18,7 @@ var photographer = require('./photographer.js');
 
 photographer.takePhoto(function(err, photoFileName) {
   if (err) {
-    talker.speak('I can not take a foto now. Sorry.');
+    talker.speak('No puedo hacer una foto ahora. Lo siento.', () => process.exit(1));
     return;
   }
 
@@ -45,19 +45,21 @@ photographer.takePhoto(function(err, photoFileName) {
         spokenText = spokenText.replace(/\n/g, ". ");
         spokenText = fixString(spokenText);
         console.log('speak %s', spokenText);
-        talker.speak('Atiende, este es el texto que he leido: ' + spokenText);
+        talker.speak('Atiende, este es el texto que he leido: ' + spokenText, () => process.exit(0));
       } else {
         console.log('No text annotations');
-        talker.speak('No consigo entender ese texto');
+        talker.speak('No consigo entender ese texto.', () => process.exit(0));
       }
     } else {
       console.log('No responses');
-      talker.speak('Lo siento, no consigo entender ese texto');
+      talker.speak('Lo siento, no consigo entender ese texto.', () => process.exit(0));
     }
   }, (e) => {
     console.log('Error: ', e);
+    process.exit(1);
   }).catch((e) => {
     console.log('ERROR FATAL', e);
+    process.exit(1);
   });
 });
 

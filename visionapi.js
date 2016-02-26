@@ -32,25 +32,13 @@ const clientFaces = new oxford.Client(MS_VISION_FACE_API_TOKEN),
 
 photographer.takePhoto(function(err, photoFileName) {
   if (err) {
-    talker.speak('I can not take a foto now. Sorry.');
+    talker.speak('No puedo hacer una foto ahora. Lo siento.', () => process.exit(1));
     return;
   }
 
 	console.log('File: ' + photoFileName);
 
   firebaser.uploadImage(photoFileName, {}); // best effort: fire and forget
-
-  /**
-  clientComputer.vision.analyzeImage({
-    path: photoFileName,
-    Categories: true,
-    Faces: true
-  }).then((res) => {
-    console.log(JSON.stringify(res));
-  }, (e) => {
-    console.log('Error: ', e);
-  });
-  */
 
   clientFaces.face.detect({
       path: photoFileName,
@@ -68,7 +56,7 @@ photographer.takePhoto(function(err, photoFileName) {
       talker.speak(generalDescription, function () {
         if (res.length < 4) { // avoid parsing too many people
           let description = describeOxfordPeople(res);
-          talker.speak(description);
+          talker.speak(description, () => process.exit(0));
         } else {
           let age = 0;
           people.forEach(person => {
@@ -76,7 +64,7 @@ photographer.takePhoto(function(err, photoFileName) {
           });
           let averageAge = (age / res.length).toFixed(0);
 
-          talker.speak('Su edad media es de unos ' + averageAge + ' anyos y son casi todos hombres');
+          talker.speak('Su edad media es de unos ' + averageAge + ' anyos y son casi todos hombres', () => process.exit(0));
         }
       });
     } else {
@@ -97,19 +85,21 @@ photographer.takePhoto(function(err, photoFileName) {
 
           if (Array.isArray(response.logoAnnotations) && response.logoAnnotations.length > 0) {
             let brand = response.logoAnnotations[0].description;
-            talker.speak('Tienes delante un producto de la marca ' + brand);
+            talker.speak('Tienes delante un producto de la marca ' + brand, () => process.exit(0));
           } else {
-            talker.speak('Lo siento. No he encontrado nada interesante.');
+            talker.speak('Lo siento. No he encontrado nada interesante.', () => process.exit(0));
           }
         } else {
-          talker.speak('Lo siento. No he encontrado nada.');
+          talker.speak('Lo siento. No he encontrado nada.', () => process.exit(0));
         }
       }, (e) => {
         console.log('Error: ', e);
+        process.exit(1);
       });
     }
   }, (e) => {
     console.log('Error: ', e);
+    process.exit(1);
   });
 });
 
@@ -122,9 +112,9 @@ function describeOxfordPeople(people) {
             ' de unos ' + (person.faceAttributes.age).toFixed(0) + ' anyos';
 
     if (person.faceAttributes.gender === 'male') {
-      if (person.faceAttributes.facialHair.beard >= 0.25 && person.faceAttributes.facialHair.beard < 0.5) {
+      if (person.faceAttributes.facialHair.beard >= 0.3 && person.faceAttributes.facialHair.beard < 0.5) {
         personDescription += ', que tiene barba de unos dias';
-      } else if (person.faceAttributes.facialHair.beard >= 0.9) {
+      } else if (person.faceAttributes.facialHair.beard >= 0.7) {
         personDescription += ', con mucha barba';
       }
     }

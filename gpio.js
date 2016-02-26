@@ -35,6 +35,7 @@ function run() {
       if (initProcess === INIT_EVENTS ) {
         talker.speak('Vamos alla', function() {
           console.log('Do image process');
+          require('child_process').execSync('sh ./visionapi.sh');
         });
       } else {
         initProcess++;
@@ -47,6 +48,7 @@ function run() {
       if (initProcess === INIT_EVENTS ) {
         talker.speak('Voy a leer', function() {
           console.log('Do ocr process');
+          require('child_process').execSync('sh ./ocr.sh');
         });
       } else {
         initProcess++;
