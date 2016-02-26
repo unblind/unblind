@@ -41,12 +41,20 @@ photographer.takePhoto(function(err, photoFileName) {
     vision.annotate(req).then((res) => {
       console.log(JSON.stringify(res.responses));
 
-      res.textAnnotations.forEach((text) => {
-        var spokenText = text.description.replaceAll('\n', '. ')
-        spokenText = fixString(spokenText);
-        console.log('speak %s', spokenText);
-        talker.speak(spokenText);
-      })
+      // use the first response
+      if (Array.isArray(res.responses) && res.responses.length > 0) {
+        let response = res.responses[0];
+
+        if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
+          let spokenText = response.textAnnotations[0].description;
+          spokenText = spokenText.replaceAll('\n', '. ')
+          spokenText = fixString(spokenText);
+          console.log('speak %s', spokenText);
+          talker.speak(spokenText);
+        }
+      } else {
+        talker.speak('No consigo entender ese texto');
+      }
     }, (e) => {
       console.log('Error: ', e);
     });
