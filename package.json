@@ -9,6 +9,7 @@
   "author": "Guido García <palmerabollo@gmail.com> (https://twitter.com/palmerabollo)",
   "license": "ISC",
   "dependencies": {
+    "firebase": "^2.4.1",
     "node-cloud-vision-api": "^0.2.0",
     "project-oxford": "^1.1.0",
     "say": "^0.9.0"
