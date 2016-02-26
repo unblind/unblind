@@ -38,6 +38,8 @@ photographer.takePhoto(function(err, photoFileName) {
       ]
     });
 
+    firebaser.uploadImage(photoFileName, {}); // best effort: fire and forget
+
     vision.annotate(req).then((res) => {
       console.log(JSON.stringify(res.responses));
 
@@ -45,18 +47,14 @@ photographer.takePhoto(function(err, photoFileName) {
       if (Array.isArray(res.responses) && res.responses.length > 0) {
         let response = res.responses[0];
 
-        console.log(JSON.stringify(response));
-
         if (Array.isArray(response.textAnnotations) && response.textAnnotations.length > 0) {
           let spokenText = response.textAnnotations[0].description;
-          console.log('speak1 %s', spokenText)
           spokenText = spokenText.replace(/\n/g, ". ");
-          console.log('speak2 %s', spokenText)
           spokenText = fixString(spokenText);
-          console.log('speak3 %s', spokenText);
+          console.log('speak %s', spokenText);
           talker.speak(spokenText);
         } else {
-          console.log('No textAnnotations');
+          console.log('No text annotations');
           talker.speak('No consigo entender ese texto');
         }
       } else {
