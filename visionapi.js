@@ -101,13 +101,7 @@ photographer.takePhoto(function(err, photoFileName) {
           console.log(res);
         });
       } else {
-        // process other info (ocr, landmarks)
-        clientComputer.vision.ocr({
-          path: photoFileName,
-          language: 'es'
-        }).then(function (visionResponse) {
-          console.log(visionResponse);
-        });
+        talker.speak('Lo siento. No he encontrado nada.');
       }
     }, (e) => {
       console.log('Error: ', e);
