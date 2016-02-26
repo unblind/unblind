@@ -42,7 +42,10 @@ photographer.takePhoto(function(err, photoFileName) {
       console.log(JSON.stringify(res.responses));
 
       res.textAnnotations.forEach((text) => {
-        talker.speak(text.description.replaceAll('\n', '. '));
+        var spokenText = text.description.replaceAll('\n', '. ')
+        spokenText = fixString(spokenText);
+        console.log('speak %s', spokenText);
+        talker.speak(spokenText);
       })
     }, (e) => {
       console.log('Error: ', e);
@@ -87,3 +90,23 @@ photographer.takePhoto(function(err, photoFileName) {
     });;
   }
 });
+
+// see http://stackoverflow.com/a/20444401/12388
+function fixString(str) {
+  var temp = "",
+      count = 0;
+  str.split("").forEach(function (value, index, array) {
+      var next = array[index + 1],
+          x = value.charCodeAt(),
+          isChar = ((x >= 65 && x <= 90) || (x >= 97 && x <= 122));
+      if (value === " ") {
+          count++;
+      } else if (count > 0 && value !== " ") {
+          temp += ((next && next !== " ") || (temp.length > 0 && isChar) ? " " : "") + value;
+          count = 0;
+      } else {
+          temp += value;
+      }
+  });
+  return temp;
+}
