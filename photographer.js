@@ -15,9 +15,9 @@ function takePhoto(callback) {
 
     var opts = {
       mode: 'photo',
-      quality: 50,
-      width: 1024,
-      height: 768,
+      quality: 75,
+      width: 640, // 1024,
+      height: 480, // 768,
       output: pictureFilename
     };
 
