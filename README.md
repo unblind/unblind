@@ -45,5 +45,5 @@ Edit ~/.festivalrc to add:
 
 #Init pushbutton mode:
 ```
-sudo ./buttons.py
+./buttons.py
 ```

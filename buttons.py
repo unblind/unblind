@@ -16,12 +16,14 @@ def main():
 
     while True:
         if GPIO.input(17):
+            print "Vision Api activated"
             try:
                 rc = subprocess.call("cd /home/pi/unblind && sh /home/pi/unblind/visionapi.sh && cd -", shell=True)
             except OSError as e:
                 print( e )
             print "button17 true"
         if GPIO.input(18):
+            print "OCR Api activated"
             try:
                 rc = subprocess.call("cd /home/pi/unblind && sh /home/pi/unblind/ocr.sh && cd -", shell=True)
             except OSError as e:
