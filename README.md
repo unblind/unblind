@@ -41,3 +41,9 @@ Edit ~/.festivalrc to add:
 ```
 (set! voice_default 'voice_el_diphone)
 ```
+
+
+#Init pushbutton mode:
+```
+sudo ./buttons.py
+```
