@@ -32,7 +32,12 @@ function run() {
     if (value === gpio.LOW) {
       if (initProcess === INIT_EVENTS ) {
         console.log('Do image process');
-        require('child_process').exec('sh ./visionapi.sh');
+        require('child_process').exec('visionapi.sh', function(err) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        });
       } else {
         initProcess++;
       }
@@ -43,7 +48,12 @@ function run() {
     if (value === gpio.LOW) {
       if (initProcess === INIT_EVENTS ) {
         console.log('Do ocr process');
-        require('child_process').exec('sh ./ocr.sh');
+        require('child_process').exec('ocr.sh', function(err) {
+          if (err) {
+            console.error(err);
+            return;
+          }
+        });
       } else {
         initProcess++;
       }
