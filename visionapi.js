@@ -73,7 +73,7 @@ photographer.takePhoto(function(err, photoFileName) {
       const req = new vision.Request({
         image: new vision.Image(photoFileName),
         features: [
-          new vision.Feature('LABEL_DETECTION', 1),
+          new vision.Feature('LABEL_DETECTION', 4),
           new vision.Feature('LOGO_DETECTION', 1)
         ]
       });
@@ -91,8 +91,8 @@ photographer.takePhoto(function(err, photoFileName) {
             let topic = response.labelAnnotations[0].description;
             let score = response.labelAnnotations[0].score;
 
-            if (score > 0.75 && MAP_TOPICS[topic]) {
-              talker.speak('Parece que hay algo relacionado con ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
+            if (score > 0.8 && MAP_TOPICS[topic]) {
+              talker.speak('Parece que hay algo ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
             } else {
               talker.speak('Lo siento. No se interpretar lo que estas viendo.', () => process.exit(0));
             }
@@ -113,8 +113,12 @@ photographer.takePhoto(function(err, photoFileName) {
   });
 });
 
-MAP_TOPICS = {
-  'furniture': 'mobiliario o muebles'
+let MAP_TOPICS = {
+  'furniture': 'relacionado con mobiliario o muebles en general',
+  'bag': 'en una bolsa',
+  'green': 'de color verde',
+  'flower': 'relacionado con plantas o flores',
+  'floor': 'parecido a un suelo o un techo'
 };
 
 function describeOxfordPeople(people) {
