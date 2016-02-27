@@ -93,7 +93,7 @@ photographer.takePhoto(function(err, photoFileName) {
             if (validItems.length > 0) {
               talker.speak('Parece que hay ' + MAP_TOPICS[validItems[0].description] + '. Pero no estoy muy seguro.', () => process.exit(0));
             } else {
-              talker.speak('Lo siento. No se interpretar lo que tienes delante.', () => process.exit(0));
+              talker.speak('Lo siento. No he encontrado nada interesante.', () => process.exit(0));
             }
           } else {
             talker.speak('Lo siento. No he encontrado nada interesante.', () => process.exit(0));
