@@ -88,8 +88,11 @@ photographer.takePhoto(function(err, photoFileName) {
             let brand = response.logoAnnotations[0].description;
             talker.speak('Tienes delante un producto de la marca ' + brand, () => process.exit(0));
           } else if (Array.isArray(response.labelAnnotations) && response.labelAnnotations.length > 0) {
-            let topic = response.labelAnnotations[0].description;
-            let score = response.labelAnnotations[0].score;
+            let validItems = response.labelAnnotations[0]
+                                     .filter(item => return item.score > 0.80 && MAP_TOPICS[item.description]);
+
+            let topic = validItems[0].description;
+            let score = validItems[0].score;
 
             if (score > 0.80 && MAP_TOPICS[topic]) {
               talker.speak('Parece que hay ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
