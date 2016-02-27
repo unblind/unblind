@@ -87,6 +87,15 @@ photographer.takePhoto(function(err, photoFileName) {
           if (Array.isArray(response.logoAnnotations) && response.logoAnnotations.length > 0) {
             let brand = response.logoAnnotations[0].description;
             talker.speak('Tienes delante un producto de la marca ' + brand, () => process.exit(0));
+          } else if (Array.isArray(response.labelAnnotations) && response.labelAnnotations.length > 0) {
+            let topic = response.labelAnnotations[0].description;
+            let score = response.labelAnnotations[0].score;
+
+            if (score > 0.75 && MAP_TOPICS[topic]) {
+              talker.speak('Parece que hay algo relacionado con ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
+            } else {
+              talker.speak('Lo siento. No se interpretar lo que estas viendo.', () => process.exit(0));
+            }
           } else {
             talker.speak('Lo siento. No he encontrado nada interesante.', () => process.exit(0));
           }
@@ -103,6 +112,10 @@ photographer.takePhoto(function(err, photoFileName) {
     process.exit(1);
   });
 });
+
+MAP_TOPICS = {
+  'furniture': 'mobiliario o muebles'
+};
 
 function describeOxfordPeople(people) {
   let description = '';
