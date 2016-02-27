@@ -52,3 +52,5 @@ function run() {
   buttonImage.listen();
   buttonOCR.listen();
 };
+
+run();
