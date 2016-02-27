@@ -1,15 +1,13 @@
 'use strict';
 
-const talker = require('./talker');
+var gpio = process.arch === 'arm' ? require('node-gpio') : null;
 
-const gpio = process.arch === 'arm' ? require('node-gpio') : null;
-
-const BUTTON_IMAGE_PIN = '17';
-const BUTTON_OCR_PIN = '18';
-const INIT_EVENTS = 2;
+var BUTTON_IMAGE_PIN = '17';
+var BUTTON_OCR_PIN = '18';
+var INIT_EVENTS = 2;
 
 module.exports = {
-  run
+  run: run
 };
 
 function run() {
@@ -19,10 +17,10 @@ function run() {
     return;
   }
 
-  let GPIO = gpio.GPIO;
-  let buttonImage = new GPIO(BUTTON_IMAGE_PIN);
-  let buttonOCR = new GPIO(BUTTON_OCR_PIN);
-  let initProcess = 0;
+  var GPIO = gpio.GPIO;
+  var buttonImage = new GPIO(BUTTON_IMAGE_PIN);
+  var buttonOCR = new GPIO(BUTTON_OCR_PIN);
+  var initProcess = 0;
 
   buttonImage.open();
   buttonImage.setMode(gpio.IN);
@@ -33,10 +31,8 @@ function run() {
   buttonImage.on('changed', function (value) {
     if (value === gpio.LOW) {
       if (initProcess === INIT_EVENTS ) {
-        talker.speak('Vamos alla', function() {
-          console.log('Do image process');
-          require('child_process').execSync('sh ./visionapi.sh');
-        });
+        console.log('Do image process');
+        require('child_process').execSync('sh ./visionapi.sh');
       } else {
         initProcess++;
       }
@@ -46,10 +42,8 @@ function run() {
   buttonOCR.on('changed', function (value) {
     if (value === gpio.LOW) {
       if (initProcess === INIT_EVENTS ) {
-        talker.speak('Voy a leer', function() {
-          console.log('Do ocr process');
-          require('child_process').execSync('sh ./ocr.sh');
-        });
+        console.log('Do ocr process');
+        require('child_process').execSync('sh ./ocr.sh');
       } else {
         initProcess++;
       }

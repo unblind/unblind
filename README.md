@@ -3,9 +3,10 @@
 Unblind. Be my eyes. HackForGood Valladolid, 2016
 
 ```
-export GOOGLE_VISION_API_TOKEN=<your google vision api token>
-export MS_OXFORD_API_TOKEN=<your oxford api token for face detection>
-export MS_VISION_EMOTION_API_TOKEN=<your oxford api token for emotions>
+export GOOGLE_VISION_API_TOKEN=<your-token>
+export MS_VISION_FACE_API_TOKEN=<your-token>
+export MS_VISION_EMOTION_API_TOKEN=<your-token>
+export MS_VISION_COMPUTER_API_TOKEN=<your-token>
 
 npm install
 node visionapi
@@ -31,8 +32,12 @@ npm install -g node-gpio
 
 ## Install Jasper
 
-Additional tasks:
+Follow the official instructions.
+
+Spanish voices
+
+Edit ~/.festivalrc to add:
 
 ```
-sudo apt-get install libyaml-dev
+(set! voice_default 'voice_el_diphone)
 ```
