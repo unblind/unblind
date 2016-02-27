@@ -88,14 +88,10 @@ photographer.takePhoto(function(err, photoFileName) {
             let brand = response.logoAnnotations[0].description;
             talker.speak('Tienes delante un producto de la marca ' + brand, () => process.exit(0));
           } else if (Array.isArray(response.labelAnnotations) && response.labelAnnotations.length > 0) {
-            let validItems = response.labelAnnotations[0]
-                                     .filter(item => return item.score > 0.80 && MAP_TOPICS[item.description]);
+            let validItems = response.labelAnnotations.filter((item) => { return (item.score > 0.80 && MAP_TOPICS[item.description]) });
 
-            let topic = validItems[0].description;
-            let score = validItems[0].score;
-
-            if (score > 0.80 && MAP_TOPICS[topic]) {
-              talker.speak('Parece que hay ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
+            if (validItems) {
+              talker.speak('Parece que hay ' + MAP_TOPICS[validItems[0].description] + '. Pero no estoy muy seguro.', () => process.exit(0));
             } else {
               talker.speak('Lo siento. No se interpretar lo que tienes delante.', () => process.exit(0));
             }
@@ -107,6 +103,9 @@ photographer.takePhoto(function(err, photoFileName) {
         }
       }, (e) => {
         console.log('Error: ', e);
+        process.exit(1);
+      }).catch((e) => {
+        console.log('ERROR FATAL', e);
         process.exit(1);
       });
     }
@@ -123,7 +122,8 @@ let MAP_TOPICS = {
   'green': 'algo de color verde',
   'flower': 'algo relacionado con plantas o flores',
   'floor': 'algo parecido a un suelo',
-  'ceiling': 'un techo de una habitacion'
+  'ceiling': 'un techo de una habitacion',
+  'room': 'una habitacion y no puedo precisar mas'
 };
 
 function describeOxfordPeople(people) {
