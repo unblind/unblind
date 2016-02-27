@@ -91,10 +91,10 @@ photographer.takePhoto(function(err, photoFileName) {
             let topic = response.labelAnnotations[0].description;
             let score = response.labelAnnotations[0].score;
 
-            if (score > 0.8 && MAP_TOPICS[topic]) {
-              talker.speak('Parece que hay algo ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
+            if (score > 0.80 && MAP_TOPICS[topic]) {
+              talker.speak('Parece que hay ' + topic + '. Pero no estoy muy seguro.', () => process.exit(0));
             } else {
-              talker.speak('Lo siento. No se interpretar lo que estas viendo.', () => process.exit(0));
+              talker.speak('Lo siento. No se interpretar lo que tienes delante.', () => process.exit(0));
             }
           } else {
             talker.speak('Lo siento. No he encontrado nada interesante.', () => process.exit(0));
@@ -113,12 +113,14 @@ photographer.takePhoto(function(err, photoFileName) {
   });
 });
 
+// last resort
 let MAP_TOPICS = {
-  'furniture': 'relacionado con mobiliario o muebles en general',
-  'bag': 'en una bolsa',
-  'green': 'de color verde',
-  'flower': 'relacionado con plantas o flores',
-  'floor': 'parecido a un suelo o un techo'
+  'furniture': 'algo relacionado con mobiliario o muebles en general',
+  'bag': 'una bolsa',
+  'green': 'algo de color verde',
+  'flower': 'algo relacionado con plantas o flores',
+  'floor': 'algo parecido a un suelo',
+  'ceiling': 'un techo de una habitacion'
 };
 
 function describeOxfordPeople(people) {
@@ -132,7 +134,7 @@ function describeOxfordPeople(people) {
     if (person.faceAttributes.gender === 'male') {
       if (person.faceAttributes.facialHair.beard >= 0.3 && person.faceAttributes.facialHair.beard < 0.5) {
         personDescription += ', que tiene barba de unos dias';
-      } else if (person.faceAttributes.facialHair.beard >= 0.7) {
+      } else if (person.faceAttributes.facialHair.beard >= 0.6) {
         personDescription += ', con mucha barba';
       }
     }
