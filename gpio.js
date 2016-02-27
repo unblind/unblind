@@ -32,7 +32,7 @@ function run() {
     if (value === gpio.LOW) {
       if (initProcess === INIT_EVENTS ) {
         console.log('Do image process');
-        require('child_process').execSync('sh ./visionapi.sh');
+        require('child_process').exec('sh ./visionapi.sh');
       } else {
         initProcess++;
       }
@@ -43,7 +43,7 @@ function run() {
     if (value === gpio.LOW) {
       if (initProcess === INIT_EVENTS ) {
         console.log('Do ocr process');
-        require('child_process').execSync('sh ./ocr.sh');
+        require('child_process').exec('sh ./ocr.sh');
       } else {
         initProcess++;
       }
