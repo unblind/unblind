@@ -1,6 +1,6 @@
 # My Eyes
 
-La documentación del proyecto MyEyes, desarrollado en el HackForGood Valladolid de 2016, está recogida en [unblind-doc](https://github.com/unblind/unblind-doc).
+**La documentación detallada del proyecto MyEyes, desarrollado en el HackForGood Valladolid de 2016, está recogida en [unblind-doc](https://github.com/unblind/unblind-doc).** 
 
 ## Configuración del software
 
